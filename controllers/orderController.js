@@ -57,23 +57,37 @@ const placeOrder = async (req, res) => {
     }
 }
 
-const verifyOrder = async (req,res)=>{
-    const {orderId,success} = req.body;
+const verifyOrder = async (req, res) => {
+    const { orderId, success } = req.query;  // Assuming you are passing parameters via query
 
     try {
-        if(success=="true"){
-            await orderModel.findByIdAndUpdate(orderId,{payment:true});
-            res.json({success:true,message:"Paid"})
-        }
-        else{
-            await orderModel.findByIdAndDelete(orderId);
-            res.json({success:false, message:"Not Paid"})
+        console.log(`Verifying order: ${orderId}, success: ${success}`);
+        
+        if (success === "true") {
+            const updatedOrder = await orderModel.findByIdAndUpdate(orderId, { payment: true }, { new: true });
+            if (updatedOrder) {
+                console.log(`Order ${orderId} marked as paid.`);
+                res.json({ success: true, message: "Paid" });
+            } else {
+                console.error(`Order ${orderId} not found.`);
+                res.json({ success: false, message: "Order not found" });
+            }
+        } else {
+            const deletedOrder = await orderModel.findByIdAndDelete(orderId);
+            if (deletedOrder) {
+                console.log(`Order ${orderId} deleted as payment was not successful.`);
+                res.json({ success: false, message: "Not Paid" });
+            } else {
+                console.error(`Order ${orderId} not found.`);
+                res.json({ success: false, message: "Order not found" });
+            }
         }
     } catch (error) {
-        console.log(error);
-        res.json({success:false,message:"Error"})
+        console.error(`Error verifying order ${orderId}:`, error);
+        res.json({ success: false, message: "Error" });
     }
 }
+
 
 // user orders for frontend
 
