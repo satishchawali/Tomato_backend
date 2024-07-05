@@ -58,7 +58,7 @@ const placeOrder = async (req, res) => {
 }
 
 const verifyOrder = async (req, res) => {
-    const { orderId, success } = req.query;  // Assuming you are passing parameters via query
+    const { orderId, success } = req.body;
 
     try {
         console.log(`Verifying order: ${orderId}, success: ${success}`);
@@ -87,6 +87,7 @@ const verifyOrder = async (req, res) => {
         res.json({ success: false, message: "Error" });
     }
 }
+
 
 
 // user orders for frontend
