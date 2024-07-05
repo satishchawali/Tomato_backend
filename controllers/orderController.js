@@ -1,12 +1,11 @@
 import orderModel from '../models/orderModel.js'
 import userModel from '../models/userModel.js'
 import Stripe from "stripe"
-const BASE_URL = process.env.BASE_URL
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const placeOrder = async (req, res) => {
-    const frontend_url = BASE_URL;
+    const frontend_url = "https://delicate-cupcake-6d1a0f.netlify.app"
 
     try {
         const newOrder = new orderModel({
