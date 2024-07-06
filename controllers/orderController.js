@@ -46,7 +46,7 @@ const placeOrder = async (req, res) => {
         const session = await stripe.checkout.sessions.create({
             line_items: line_items,
             mode: 'payment',
-            success_url: `${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
+            success_url: `${frontend_url}/verify?success=true&rorderId=${newOrder._id}`,
             cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`
         });
 
@@ -61,7 +61,7 @@ const verifyOrder = async (req,res)=>{
     const {orderId,success} = req.body;
 
     try {
-        if(success==="true"){
+        if(success==="true" || success === true){
             await orderModel.findByIdAndUpdate(orderId,{payment:true});
             res.json({success:true,message:"Paid"})
         }
