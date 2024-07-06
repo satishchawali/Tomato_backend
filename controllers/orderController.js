@@ -3,7 +3,7 @@ import userModel from '../models/userModel.js'
 import Stripe from "stripe"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const frontend_url = "https://tubular-peony-e82490.netlify.app"
+const frontend_url = "https://warm-scone-feb311.netlify.app/"
 
 const placeOrder = async (req, res) => {
 
